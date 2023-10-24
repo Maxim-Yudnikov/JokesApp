@@ -3,13 +3,7 @@ package com.maxim.jokesapp
 import com.maxim.jokesapp.joke.JokeUiModel
 
 interface Model {
-    fun getJoke()
-    fun init(callback: JokeCallback)
-    fun clear()
-    fun changeJokeStatus(jokeCallback: JokeCallback)
+    suspend fun getJoke(): JokeUiModel
+    suspend fun changeJokeStatus(): JokeUiModel?
     fun chooseDataSource(cached: Boolean)
-}
-
-interface JokeCallback {
-    fun provide(joke: JokeUiModel)
 }

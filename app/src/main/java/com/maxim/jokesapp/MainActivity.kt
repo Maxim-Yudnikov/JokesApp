@@ -32,13 +32,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             viewModel.init(object : DataCallback {
-                override fun provideText(text: String) = runOnUiThread {
+                override fun provideText(text: String) {
                     getJokeButton.isEnabled = true
                     progressBar.visibility = View.INVISIBLE
                     jokeText.text = text
                 }
 
-                override fun provideIconRes(id: Int) = runOnUiThread {
+                override fun provideIconRes(id: Int) {
                     favoriteButton.setImageResource(id)
                 }
             })

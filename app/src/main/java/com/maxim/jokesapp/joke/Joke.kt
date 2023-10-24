@@ -1,6 +1,6 @@
 package com.maxim.jokesapp.joke
 
-import com.maxim.jokesapp.cache.CachedDataSource
+import com.maxim.jokesapp.cache.CacheDataSource
 
 class Joke(
     private val id: Int,
@@ -8,7 +8,7 @@ class Joke(
     private val text: String,
     private val punchline: String
 ) {
-    fun change(cachedDataSource: CachedDataSource) = cachedDataSource.addOrRemove(id, this)
+    suspend fun change(cachedDataSource: CacheDataSource) = cachedDataSource.addOrRemove(id, this)
     fun toBaseJoke() = BaseJokeUiModel(text, punchline)
     fun toFavoriteJoke() = FavoriteJokeUiModel(text, punchline)
     fun toJokeRealm(): JokeRealm {

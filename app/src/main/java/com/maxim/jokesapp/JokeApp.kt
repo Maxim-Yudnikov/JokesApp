@@ -3,6 +3,7 @@ package com.maxim.jokesapp
 import android.app.Application
 import com.maxim.jokesapp.cache.BaseCachedDataSource
 import com.maxim.jokesapp.cloud.BaseCloudDataSource
+import com.maxim.jokesapp.cloud.BaseRealmProvider
 import com.maxim.jokesapp.joke.JokeService
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -18,12 +19,10 @@ class JokeApp : Application() {
             .addConverterFactory(GsonConverterFactory.create()).build()
 
         Realm.init(this)
-        val config = RealmConfiguration.Builder().allowWritesOnUiThread(true).build()
-        Realm.setDefaultConfiguration(config)
 
         viewModel = ViewModel(
             BaseModel(
-                BaseCachedDataSource(Realm.getDefaultInstance()),
+                BaseCachedDataSource(BaseRealmProvider()),
                 BaseCloudDataSource(retrofit.create(JokeService::class.java))
             )
         )

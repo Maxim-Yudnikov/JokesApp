@@ -1,14 +1,11 @@
 package com.maxim.jokesapp.cloud
 
+import com.maxim.jokesapp.Result
 import com.maxim.jokesapp.joke.Joke
+import com.maxim.jokesapp.joke.JokeServerModel
 
 interface CloudDataSource {
-    fun getJoke(callback: JokeCloudCallback)
-}
-
-interface JokeCloudCallback {
-    fun provide(joke: Joke)
-    fun fail(error: ErrorType)
+    suspend fun getJoke(): Result<JokeServerModel, ErrorType>
 }
 
 enum class ErrorType {
