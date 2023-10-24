@@ -10,7 +10,7 @@ import com.maxim.jokesapp.cloud.RealmProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class BaseCachedDataSource(private val realmProvider: RealmProvider) : CacheDataSource {
+class BaseCacheDataSource(private val realmProvider: RealmProvider) : CacheDataSource {
     override suspend fun getJoke(): Result<Joke, Unit> {
         realmProvider.provide().let {
             val jokes = it.where(JokeRealm::class.java).findAll()

@@ -1,14 +1,15 @@
-package com.maxim.jokesapp
+package  com.maxim.jokesapp
 
 import android.app.Application
-import com.maxim.jokesapp.cache.BaseCachedDataSource
+import com.maxim.jokesapp.cache.BaseCacheDataSource
 import com.maxim.jokesapp.cloud.BaseCloudDataSource
 import com.maxim.jokesapp.cloud.BaseRealmProvider
+import com.maxim.jokesapp.joke.BaseCachedJoke
 import com.maxim.jokesapp.joke.JokeService
 import io.realm.Realm
-import io.realm.RealmConfiguration
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 class JokeApp : Application() {
     lateinit var viewModel: ViewModel
@@ -17,16 +18,23 @@ class JokeApp : Application() {
         super.onCreate()
         val retrofit = Retrofit.Builder().baseUrl("https://www.google.com")
             .addConverterFactory(GsonConverterFactory.create()).build()
-
         Realm.init(this)
+
+        val cachedJoke = BaseCachedJoke()
+        val cacheDataSource = BaseCacheDataSource(BaseRealmProvider())
 
         viewModel = ViewModel(
             BaseModel(
-                BaseCachedDataSource(BaseRealmProvider()),
-                BaseCloudDataSource(retrofit.create(JokeService::class.java))
+                cacheDataSource,
+                CacheResultHandler(cachedJoke, cacheDataSource, NoCachedJokes()),
+                CloudResultHandler(
+                    cachedJoke,
+                    BaseCloudDataSource(retrofit.create(JokeService::class.java)),
+                    NoConnection(),
+                    ServiceUnavailable()
+                ),
+                cachedJoke
             )
         )
     }
-
-    //todo закрыть реалм
 }
