@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 interface Communication {
     fun showState(state: State)
     fun observe(owner: LifecycleOwner, observer: Observer<State>)
+    fun isState(type: Int): Boolean
 }
 
 class BaseCommunication : Communication {
@@ -18,5 +19,9 @@ class BaseCommunication : Communication {
 
     override fun observe(owner: LifecycleOwner, observer: Observer<State>) {
         liveData.observe(owner, observer)
+    }
+
+    override fun isState(type: Int): Boolean {
+        return liveData.value?.isType(type) ?: false
     }
 }

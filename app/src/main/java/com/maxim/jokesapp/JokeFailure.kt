@@ -15,3 +15,7 @@ class ServiceUnavailable : JokeFailure {
 class NoCachedJokes : JokeFailure {
     override fun getMessage() = "No favorites jokes! Add one by heart icon"
 }
+
+class GenericError() : JokeFailure {
+    override fun getMessage(): String = "unknown exception"
+}

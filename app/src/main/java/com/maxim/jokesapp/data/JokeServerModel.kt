@@ -1,8 +1,9 @@
-package com.maxim.jokesapp.joke
+package com.maxim.jokesapp.data
 
 import com.google.gson.annotations.SerializedName
+import com.maxim.jokesapp.core.Mapper
 
-data class JokeServerModel (
+data class JokeServerModel(
     @SerializedName("id")
     private val id: Int,
     @SerializedName("type")
@@ -11,6 +12,6 @@ data class JokeServerModel (
     private val text: String,
     @SerializedName("punchline")
     private val punchline: String,
-) {
-    fun toJoke() = Joke(id, type, text, punchline)
+) : Mapper<JokeDataModel> {
+    override fun to() = JokeDataModel(id, text, punchline)
 }

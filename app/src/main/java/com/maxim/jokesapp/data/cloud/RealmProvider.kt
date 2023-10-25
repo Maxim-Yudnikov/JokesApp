@@ -1,4 +1,4 @@
-package com.maxim.jokesapp.cloud
+package com.maxim.jokesapp.data.cloud
 
 import io.realm.Realm
 

@@ -1,6 +1,6 @@
 package com.maxim.jokesapp.joke
 
-import com.maxim.jokesapp.joke.JokeServerModel
+import com.maxim.jokesapp.data.JokeServerModel
 import retrofit2.Call
 import retrofit2.http.GET
 

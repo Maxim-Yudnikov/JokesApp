@@ -36,9 +36,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onDestroy() {
-        Realm.getDefaultInstance().close()
-        super.onDestroy()
-    }
 }

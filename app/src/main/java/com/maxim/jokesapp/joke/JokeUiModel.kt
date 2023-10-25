@@ -2,7 +2,6 @@ package com.maxim.jokesapp.joke
 
 import androidx.annotation.DrawableRes
 import com.maxim.jokesapp.Communication
-import com.maxim.jokesapp.DataCallback
 import com.maxim.jokesapp.R
 import com.maxim.jokesapp.State
 
@@ -18,6 +17,7 @@ class FavoriteJokeUiModel(private val text: String, private val punchline: Strin
 class FailedJokeUiModel(private val text: String) : JokeUiModel(text, "") {
     override fun getIconResId() = 0
     override fun text() = text
+    override fun show(communication: Communication) = communication.showState(State.Failed(text(), getIconResId()))
 }
 
 
@@ -27,5 +27,5 @@ abstract class JokeUiModel(private val text: String, private val punchline: Stri
     @DrawableRes
     protected abstract fun getIconResId(): Int
 
-    fun show(communication: Communication) = communication.showState(State.Initial(text(), getIconResId()))
+    open fun show(communication: Communication) = communication.showState(State.Initial(text(), getIconResId()))
 }

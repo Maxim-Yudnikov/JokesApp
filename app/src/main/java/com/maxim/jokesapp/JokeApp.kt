@@ -1,9 +1,16 @@
 package  com.maxim.jokesapp
 
 import android.app.Application
-import com.maxim.jokesapp.cache.BaseCacheDataSource
-import com.maxim.jokesapp.cloud.BaseCloudDataSource
-import com.maxim.jokesapp.cloud.BaseRealmProvider
+import com.maxim.jokesapp.data.BaseJokeRepository
+import com.maxim.jokesapp.data.JokeRealmMapper
+import com.maxim.jokesapp.data.JokeServerModel
+import com.maxim.jokesapp.data.JokeSuccessMapper
+import com.maxim.jokesapp.data.cache.BaseCacheDataSource
+import com.maxim.jokesapp.data.cloud.BaseCloudDataSource
+import com.maxim.jokesapp.data.cloud.BaseRealmProvider
+import com.maxim.jokesapp.interactor.BaseJokeInteractor
+import com.maxim.jokesapp.interactor.JokeFailureFactory
+import com.maxim.jokesapp.interactor.JokeFailureHandler
 import com.maxim.jokesapp.joke.BaseCachedJoke
 import com.maxim.jokesapp.joke.JokeService
 import io.realm.Realm
@@ -19,22 +26,11 @@ class JokeApp : Application() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         Realm.init(this)
 
-        val cachedJoke = BaseCachedJoke()
-        val cacheDataSource = BaseCacheDataSource(BaseRealmProvider())
+        val cacheDataSource = BaseCacheDataSource(BaseRealmProvider(), JokeRealmMapper())
+        val cloudDataSource = BaseCloudDataSource(retrofit.create(JokeService::class.java))
+        val repository = BaseJokeRepository(cacheDataSource, cloudDataSource, BaseCachedJoke())
+        val interactor = BaseJokeInteractor(repository, JokeFailureFactory(), JokeSuccessMapper())
 
-        viewModel = MainViewModel(
-            BaseModel(
-                cacheDataSource,
-                CacheResultHandler(cachedJoke, cacheDataSource, NoCachedJokes()),
-                CloudResultHandler(
-                    cachedJoke,
-                    BaseCloudDataSource(retrofit.create(JokeService::class.java)),
-                    NoConnection(),
-                    ServiceUnavailable()
-                ),
-                cachedJoke
-            ),
-            BaseCommunication()
-        )
+        viewModel = MainViewModel(interactor, BaseCommunication())
     }
 }

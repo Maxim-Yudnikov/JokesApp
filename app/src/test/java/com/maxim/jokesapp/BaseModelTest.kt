@@ -1,13 +1,13 @@
 package com.maxim.jokesapp
 
-import com.maxim.jokesapp.cache.CacheDataSource
-import com.maxim.jokesapp.cloud.CloudDataSource
-import com.maxim.jokesapp.cloud.ErrorType
+import com.maxim.jokesapp.data.BaseJokeRepository
+import com.maxim.jokesapp.data.cache.CacheDataSource
+import com.maxim.jokesapp.data.cloud.CloudDataSource
+import com.maxim.jokesapp.data.cloud.ErrorType
 import com.maxim.jokesapp.joke.BaseCachedJoke
 import com.maxim.jokesapp.joke.BaseJokeUiModel
-import com.maxim.jokesapp.joke.CachedJoke
-import com.maxim.jokesapp.joke.Joke
-import com.maxim.jokesapp.joke.JokeServerModel
+import com.maxim.jokesapp.domain.Joke
+import com.maxim.jokesapp.data.JokeServerModel
 import com.maxim.jokesapp.joke.JokeUiModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -21,7 +21,7 @@ class BaseModelTest {
         val cachedJoke = BaseCachedJoke()
         val cacheResultHandler = CacheResultHandler(cachedJoke, cacheDataSource, NoCachedJokes())
         val cloudResultHandler = CloudResultHandler(cachedJoke, FakeCloudDataSource(), NoConnection(), ServiceUnavailable())
-        val model = BaseModel(cacheDataSource, cacheResultHandler, cloudResultHandler, cachedJoke)
+        val model = BaseJokeRepository(cacheDataSource, cacheResultHandler, cloudResultHandler, cachedJoke)
 
         model.chooseDataSource(false)
         cloudDataSource.getJokeWithResult(true)
