@@ -9,10 +9,9 @@ import com.maxim.jokesapp.joke.JokeService
 import io.realm.Realm
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class JokeApp : Application() {
-    lateinit var viewModel: ViewModel
+    lateinit var viewModel: MainViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -23,7 +22,7 @@ class JokeApp : Application() {
         val cachedJoke = BaseCachedJoke()
         val cacheDataSource = BaseCacheDataSource(BaseRealmProvider())
 
-        viewModel = ViewModel(
+        viewModel = MainViewModel(
             BaseModel(
                 cacheDataSource,
                 CacheResultHandler(cachedJoke, cacheDataSource, NoCachedJokes()),
@@ -34,7 +33,8 @@ class JokeApp : Application() {
                     ServiceUnavailable()
                 ),
                 cachedJoke
-            )
+            ),
+            BaseCommunication()
         )
     }
 }

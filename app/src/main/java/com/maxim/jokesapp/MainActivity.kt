@@ -8,7 +8,7 @@ import io.realm.Realm
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: ViewModel
+    private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,26 +27,17 @@ class MainActivity : AppCompatActivity() {
                 viewModel.changeJokeStatus()
             }
 
-            checkbox.setOnCheckedChangeListener {_, isChecked ->
+            checkbox.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.chooseFavorites(isChecked)
             }
 
-            viewModel.init(object : DataCallback {
-                override fun provideText(text: String) {
-                    getJokeButton.isEnabled = true
-                    progressBar.visibility = View.INVISIBLE
-                    jokeText.text = text
-                }
-
-                override fun provideIconRes(id: Int) {
-                    favoriteButton.setImageResource(id)
-                }
-            })
+            viewModel.observe(this@MainActivity) { state ->
+                state.show(progressBar, getJokeButton, jokeText, favoriteButton)
+            }
         }
     }
 
     override fun onDestroy() {
-        viewModel.clear()
         Realm.getDefaultInstance().close()
         super.onDestroy()
     }
