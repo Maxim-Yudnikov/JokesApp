@@ -1,51 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/checkbox"
+    <com.maxim.jokesapp.customView.FavoriteDataView
+        android:id="@+id/jokeFavoriteDataView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show favorite joke" />
+        custom:actionButtonText="Get Joke"
+        custom:checkBoxText="Show favorite joke" />
 
-    <LinearLayout
+    <com.maxim.jokesapp.customView.FavoriteDataView
+        android:layout_marginTop="20dp"
+        android:id="@+id/quoteDataView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.maxim.jokesapp.customView.CorrectTextView
-            android:id="@+id/jokeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            tools:text="Test joke" />
-
-        <com.maxim.jokesapp.customView.CorrectImageButton
-            android:id="@+id/favorite_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/ic_favorite_border_24" />
-
-    </LinearLayout>
-
-    <com.maxim.jokesapp.customView.CorrectProgress
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp" />
-
-    <com.maxim.jokesapp.customView.CorrectButton
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:id="@+id/getJokeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get joke" />
+        custom:actionButtonText="Get quote"
+        custom:checkBoxText="Show favorite quote" />
 
 </LinearLayout>
