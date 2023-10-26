@@ -2,7 +2,6 @@ package com.maxim.jokesapp.data
 
 import com.maxim.jokesapp.data.cache.CacheDataSource
 import com.maxim.jokesapp.data.cloud.CloudDataSource
-import com.maxim.jokesapp.joke.JokeUiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

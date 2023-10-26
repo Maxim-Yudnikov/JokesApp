@@ -1,4 +1,4 @@
-package com.maxim.jokesapp.joke
+package com.maxim.jokesapp.data.cache
 
 import com.maxim.jokesapp.data.CachedJoke
 import com.maxim.jokesapp.data.ChangeJoke

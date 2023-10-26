@@ -1,11 +1,15 @@
 package com.maxim.jokesapp.data.cloud
 
 import com.maxim.jokesapp.data.JokeDataFetcher
-import com.maxim.jokesapp.data.JokeServerModel
 
 interface CloudDataSource : JokeDataFetcher
+class NewJokeCloudDataSource(private val service: NewJokeService) :
+    BaseCloudDataSource<NewJokeServerModel>() {
+    override fun getJokeServerModel() = service.getJoke()
+}
 
-enum class ErrorType {
-    NO_CONNECTION,
-    SERVICE_UNAVAILABLE
+class BaseJokeCloudDataSource(private val service: BaseJokeService) :
+    BaseCloudDataSource<JokeServerModel>() {
+    override fun getJokeServerModel() = service.getJoke()
+
 }

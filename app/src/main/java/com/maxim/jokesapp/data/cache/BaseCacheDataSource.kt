@@ -1,10 +1,6 @@
 package com.maxim.jokesapp.data.cache
 
-import android.util.Log
-import com.maxim.jokesapp.joke.JokeUiModel
-import com.maxim.jokesapp.domain.Joke
 import com.maxim.jokesapp.data.JokeRealm
-import io.realm.Realm
 import com.maxim.jokesapp.data.JokeDataModel
 import com.maxim.jokesapp.data.JokeDataModelMapper
 import com.maxim.jokesapp.data.cloud.RealmProvider

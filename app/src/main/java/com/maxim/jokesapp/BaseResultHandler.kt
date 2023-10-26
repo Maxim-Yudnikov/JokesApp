@@ -5,7 +5,7 @@
 //import com.maxim.jokesapp.joke.FailedJokeUiModel
 //import com.maxim.jokesapp.domain.Joke
 //import com.maxim.jokesapp.data.JokeDataFetcher
-//import com.maxim.jokesapp.data.JokeServerModel
+//import com.maxim.jokesapp.data.cloud.JokeServerModel
 //import com.maxim.jokesapp.joke.JokeUiModel
 //
 //abstract class BaseResultHandler<S, E>(private val jokeDataFetcher: JokeDataFetcher<S, E>) {

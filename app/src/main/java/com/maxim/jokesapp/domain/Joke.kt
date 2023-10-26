@@ -2,10 +2,10 @@ package com.maxim.jokesapp.domain
 
 import com.maxim.jokesapp.JokeFailure
 import com.maxim.jokesapp.core.Mapper
-import com.maxim.jokesapp.joke.BaseJokeUiModel
-import com.maxim.jokesapp.joke.FailedJokeUiModel
-import com.maxim.jokesapp.joke.FavoriteJokeUiModel
-import com.maxim.jokesapp.joke.JokeUiModel
+import com.maxim.jokesapp.BaseJokeUiModel
+import com.maxim.jokesapp.FailedJokeUiModel
+import com.maxim.jokesapp.FavoriteJokeUiModel
+import com.maxim.jokesapp.JokeUiModel
 
 sealed class Joke : Mapper<JokeUiModel> {
     class Success(

@@ -1,7 +1,7 @@
 package com.maxim.jokesapp.data.cache//package com.maxim.jokesapp.cache
 //
 //import com.maxim.jokesapp.JokeUiModel
-//import com.maxim.jokesapp.data.JokeServerModel
+//import com.maxim.jokesapp.data.cloud.JokeServerModel
 //
 //class TestCacheDataSource : CachedDataSource {
 //    private val list = ArrayList<Pair<Int, JokeServerModel>>()

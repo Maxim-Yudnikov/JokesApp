@@ -1,9 +1,6 @@
-package com.maxim.jokesapp.joke
+package com.maxim.jokesapp
 
 import androidx.annotation.DrawableRes
-import com.maxim.jokesapp.Communication
-import com.maxim.jokesapp.R
-import com.maxim.jokesapp.State
 
 class BaseJokeUiModel(private val text: String, private val punchline: String) : JokeUiModel(text, punchline) {
     override fun getIconResId() = R.drawable.ic_favorite_border_24

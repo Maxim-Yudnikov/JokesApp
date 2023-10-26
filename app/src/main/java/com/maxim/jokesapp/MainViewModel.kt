@@ -1,5 +1,6 @@
 package com.maxim.jokesapp
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer

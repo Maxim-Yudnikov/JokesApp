@@ -1,6 +1,6 @@
 //package com.maxim.jokesapp.cloud
 //
-//import com.maxim.jokesapp.data.JokeServerModel
+//import com.maxim.jokesapp.data.cloud.JokeServerModel
 //
 //class TestCloudDataSource : CloudDataSource {
 //    private var count = 0

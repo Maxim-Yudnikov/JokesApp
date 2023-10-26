@@ -1,7 +1,5 @@
 package com.maxim.jokesapp.data.cache
 
-import com.maxim.jokesapp.joke.JokeUiModel
-import com.maxim.jokesapp.domain.Joke
 import com.maxim.jokesapp.data.JokeDataFetcher
 import com.maxim.jokesapp.data.JokeDataModel
 
