@@ -11,6 +11,6 @@ class QuoteServerModel(
     private val content: String,
     @SerializedName("author")
     private val author: String,
-) : Mapper<CommonDataModel> {
-        override fun to() = CommonDataModel(System.currentTimeMillis().toInt(), content, author)
+) : Mapper<CommonDataModel<String>> {
+        override fun to() = CommonDataModel(id, content, author)
 }

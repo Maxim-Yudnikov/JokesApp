@@ -4,7 +4,7 @@ import com.maxim.jokesapp.core.data.ChangeCommonItem
 import com.maxim.jokesapp.data.CommonDataModel
 import java.lang.IllegalStateException
 
-interface CachedData : ChangeCommonItem {
-    fun save(data: CommonDataModel)
+interface CachedData<E> : ChangeCommonItem<E> {
+    fun save(data: CommonDataModel<E>)
     fun clear()
 }

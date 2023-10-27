@@ -5,6 +5,6 @@ import com.maxim.jokesapp.data.cache.JokeRealm
 import com.maxim.jokesapp.data.cache.QuoteRealmModel
 import io.realm.RealmObject
 
-interface RealmToCommonDataMapper<T: RealmObject> {
-    fun map(realmObject: T): CommonDataModel
+interface RealmToCommonDataMapper<T: RealmObject, E> {
+    fun map(realmObject: T): CommonDataModel<E>
 }

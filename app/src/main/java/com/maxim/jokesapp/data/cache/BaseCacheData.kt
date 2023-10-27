@@ -5,9 +5,9 @@ import com.maxim.jokesapp.core.data.ChangeStatus
 import com.maxim.jokesapp.core.data.cache.CachedData
 import com.maxim.jokesapp.data.CommonDataModel
 
-class BaseCacheData: CachedData {
-    private var cached: ChangeCommonItem = ChangeCommonItem.Empty()
-    override fun save(data: CommonDataModel) {
+class BaseCacheData<E>: CachedData<E> {
+    private var cached: ChangeCommonItem<E> = ChangeCommonItem.Empty()
+    override fun save(data: CommonDataModel<E>) {
         cached = data
     }
 
@@ -15,7 +15,7 @@ class BaseCacheData: CachedData {
         cached = ChangeCommonItem.Empty()
     }
 
-    override suspend fun change(changeJokeStatus: ChangeStatus): CommonDataModel {
-        return cached.change(changeJokeStatus)
+    override suspend fun change(changeStatus: ChangeStatus<E>): CommonDataModel<E> {
+        return cached.change(changeStatus)
     }
 }

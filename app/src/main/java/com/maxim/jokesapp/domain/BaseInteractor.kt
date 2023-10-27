@@ -5,10 +5,10 @@ import com.maxim.jokesapp.core.data.CommonRepository
 import com.maxim.jokesapp.core.domain.CommonInteractor
 import com.maxim.jokesapp.core.domain.FailureHandler
 
-class BaseInteractor(
-    private val repository: CommonRepository,
+class BaseInteractor<E>(
+    private val repository: CommonRepository<E>,
     private val failureHandler: FailureHandler,
-    private val mapper: CommonDataModelMapper<CommonItem.Success>
+    private val mapper: CommonDataModelMapper<CommonItem.Success, E>
 ): CommonInteractor {
     override suspend fun getItem(): CommonItem {
         return try {

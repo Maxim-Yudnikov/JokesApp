@@ -6,18 +6,19 @@ import com.maxim.jokesapp.core.data.cache.RealmProvider
 import com.maxim.jokesapp.core.data.cache.RealmToCommonDataMapper
 import com.maxim.jokesapp.core.domain.NoCachedDataException
 import com.maxim.jokesapp.data.CommonDataModel
+import io.realm.Realm
 import io.realm.RealmObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-abstract class BaseCacheDataSource<T : RealmObject>(
+abstract class BaseCacheDataSource<T : RealmObject, E>(
     private val realmProvider: RealmProvider,
-    private val realmToCommonMapper: RealmToCommonDataMapper<T>,
-    private val mapper: CommonDataModelMapper<T>
-) : CacheDataSource {
+    private val realmToCommonMapper: RealmToCommonDataMapper<T, E>,
+    private val mapper: CommonDataModelMapper<T, E>
+) : CacheDataSource<E> {
 
     protected abstract val dbClass: Class<T>
-    override suspend fun getData(): CommonDataModel {
+    override suspend fun getData(): CommonDataModel<E> {
         realmProvider.provide().use {
             val list = it.where(dbClass).findAll()
             if (list.isEmpty())
@@ -29,10 +30,10 @@ abstract class BaseCacheDataSource<T : RealmObject>(
         }
     }
 
-    override suspend fun addOrRemove(id: Int, model: CommonDataModel): CommonDataModel =
+    override suspend fun addOrRemove(id: E, model: CommonDataModel<E>): CommonDataModel<E> =
         withContext(Dispatchers.IO) {
             realmProvider.provide().use {
-                val itemRealm = it.where(dbClass).equalTo("id", id).findFirst()
+                val itemRealm = findRealmObject(it, id)
                 return@withContext if (itemRealm == null) {
                     it.executeTransaction { transaction ->
                         val newData = model.map(mapper)
@@ -47,4 +48,6 @@ abstract class BaseCacheDataSource<T : RealmObject>(
                 }
             }
         }
+
+    protected abstract fun findRealmObject(realm: Realm, id: E): T?
 }

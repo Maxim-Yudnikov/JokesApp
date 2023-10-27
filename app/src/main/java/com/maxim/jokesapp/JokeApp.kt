@@ -13,6 +13,8 @@ import com.maxim.jokesapp.data.mapper.JokeRealmMapper
 import com.maxim.jokesapp.data.mapper.QuoteRealmMapper
 import com.maxim.jokesapp.data.net.JokeCloudDataSource
 import com.maxim.jokesapp.data.net.JokeService
+import com.maxim.jokesapp.data.net.NewJokeCloudDataSource
+import com.maxim.jokesapp.data.net.NewJokeService
 import com.maxim.jokesapp.data.net.QuoteCloudDataSource
 import com.maxim.jokesapp.data.net.QuoteService
 import com.maxim.jokesapp.domain.BaseInteractor
@@ -39,15 +41,14 @@ class JokeApp : Application() {
         Realm.init(this)
 
         val failureHandler = FailureFactory()
-        val mapper = CommonSuccessMapper()
         val realmProvider = BaseRealmProvider()
 
         val jokeCacheDataSource =
             JokeCachedDataSource(realmProvider, JokeRealmToCommonDataMapper(), JokeRealmMapper())
-        //val cloudDataSource = NewJokeCloudDataSource(retrofit.create(NewJokeService::class.java))
-        val cloudDataSource = JokeCloudDataSource(retrofit.create(JokeService::class.java))
+        val cloudDataSource = NewJokeCloudDataSource(retrofit.create(NewJokeService::class.java))
+        //val cloudDataSource = JokeCloudDataSource(retrofit.create(JokeService::class.java))
         val repository = BaseRepository(jokeCacheDataSource, cloudDataSource, BaseCacheData())
-        val interactor = BaseInteractor(repository, failureHandler, mapper)
+        val interactor = BaseInteractor(repository, failureHandler, CommonSuccessMapper())
 
         viewModel = BaseViewModel(interactor, BaseCommunication())
 
@@ -65,7 +66,7 @@ class JokeApp : Application() {
             BaseInteractor(
                 quoteRepository,
                 failureHandler,
-                mapper
+                CommonSuccessMapper()
             ), BaseCommunication()
         )
     }
