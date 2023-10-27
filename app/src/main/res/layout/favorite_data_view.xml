@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.maxim.jokesapp.customView.CorrectTextView
+        <com.maxim.jokesapp.presentation.CorrectTextView
             android:id="@+id/jokeText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:gravity="center"
             tools:text="Test joke" />
 
-        <com.maxim.jokesapp.customView.CorrectImageButton
+        <com.maxim.jokesapp.presentation.CorrectImageButton
             android:id="@+id/favorite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,14 +30,14 @@
 
     </LinearLayout>
 
-    <com.maxim.jokesapp.customView.CorrectProgress
+    <com.maxim.jokesapp.presentation.CorrectProgress
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:visibility="invisible" />
 
-    <com.maxim.jokesapp.customView.CorrectButton
+    <com.maxim.jokesapp.presentation.CorrectButton
         android:id="@+id/getJokeButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"

@@ -1,18 +1,24 @@
 package  com.maxim.jokesapp
 
 import android.app.Application
-import com.maxim.jokesapp.data.BaseJokeRepository
-import com.maxim.jokesapp.data.JokeRealmMapper
-import com.maxim.jokesapp.data.JokeSuccessMapper
-import com.maxim.jokesapp.data.cache.BaseCacheDataSource
-import com.maxim.jokesapp.data.cloud.BaseRealmProvider
-import com.maxim.jokesapp.interactor.BaseJokeInteractor
-import com.maxim.jokesapp.interactor.JokeFailureFactory
-import com.maxim.jokesapp.data.cache.BaseCachedJoke
-import com.maxim.jokesapp.data.cloud.BaseJokeService
-import com.maxim.jokesapp.data.cloud.BaseJokeCloudDataSource
-import com.maxim.jokesapp.data.cloud.NewJokeCloudDataSource
-import com.maxim.jokesapp.data.cloud.NewJokeService
+import com.maxim.jokesapp.data.BaseRepository
+import com.maxim.jokesapp.data.CommonSuccessMapper
+import com.maxim.jokesapp.data.cache.BaseCacheData
+import com.maxim.jokesapp.data.cache.BaseRealmProvider
+import com.maxim.jokesapp.data.cache.JokeCachedDataSource
+import com.maxim.jokesapp.data.cache.JokeRealmToCommonDataMapper
+import com.maxim.jokesapp.data.cache.QuoteCachedDataSource
+import com.maxim.jokesapp.data.cache.QuoteRealmToCommonDataMapper
+import com.maxim.jokesapp.data.mapper.JokeRealmMapper
+import com.maxim.jokesapp.data.mapper.QuoteRealmMapper
+import com.maxim.jokesapp.data.net.JokeCloudDataSource
+import com.maxim.jokesapp.data.net.JokeService
+import com.maxim.jokesapp.data.net.QuoteCloudDataSource
+import com.maxim.jokesapp.data.net.QuoteService
+import com.maxim.jokesapp.domain.BaseInteractor
+import com.maxim.jokesapp.domain.FailureFactory
+import com.maxim.jokesapp.presentation.BaseCommunication
+import com.maxim.jokesapp.presentation.BaseViewModel
 import io.realm.Realm
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,7 +26,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class JokeApp : Application() {
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: BaseViewModel
+    lateinit var quoteViewModel: BaseViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -31,12 +38,35 @@ class JokeApp : Application() {
             .addConverterFactory(GsonConverterFactory.create()).client(client).build()
         Realm.init(this)
 
-        val cacheDataSource = BaseCacheDataSource(BaseRealmProvider(), JokeRealmMapper())
-        val cloudDataSource = NewJokeCloudDataSource(retrofit.create(NewJokeService::class.java))
-        //val cloudDataSource = BaseJokeCloudDataSource(retrofit.create(BaseJokeService::class.java))
-        val repository = BaseJokeRepository(cacheDataSource, cloudDataSource, BaseCachedJoke())
-        val interactor = BaseJokeInteractor(repository, JokeFailureFactory(), JokeSuccessMapper())
+        val failureHandler = FailureFactory()
+        val mapper = CommonSuccessMapper()
+        val realmProvider = BaseRealmProvider()
 
-        viewModel = MainViewModel(interactor, BaseCommunication())
+        val jokeCacheDataSource =
+            JokeCachedDataSource(realmProvider, JokeRealmToCommonDataMapper(), JokeRealmMapper())
+        //val cloudDataSource = NewJokeCloudDataSource(retrofit.create(NewJokeService::class.java))
+        val cloudDataSource = JokeCloudDataSource(retrofit.create(JokeService::class.java))
+        val repository = BaseRepository(jokeCacheDataSource, cloudDataSource, BaseCacheData())
+        val interactor = BaseInteractor(repository, failureHandler, mapper)
+
+        viewModel = BaseViewModel(interactor, BaseCommunication())
+
+        val quoteRepository = BaseRepository(
+            QuoteCachedDataSource(
+                realmProvider,
+                QuoteRealmToCommonDataMapper(),
+                QuoteRealmMapper()
+            ),
+            QuoteCloudDataSource(retrofit.create(QuoteService::class.java)),
+            BaseCacheData()
+        )
+
+        quoteViewModel = BaseViewModel(
+            BaseInteractor(
+                quoteRepository,
+                failureHandler,
+                mapper
+            ), BaseCommunication()
+        )
     }
 }
