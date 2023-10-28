@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:appns="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        appns:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
     <com.maxim.jokesapp.presentation.FavoriteDataView
         android:id="@+id/jokeFavoriteDataView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        custom:actionButtonText="Get Joke"
-        custom:checkBoxText="Show favorite joke" />
-
-    <com.maxim.jokesapp.presentation.FavoriteDataView
-        android:layout_marginTop="20dp"
-        android:id="@+id/quoteDataView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        custom:actionButtonText="Get quote"
-        custom:checkBoxText="Show favorite quote" />
+        appns:actionButtonText="Get Joke"
+        appns:checkBoxText="Show favorite joke" />
 
 </LinearLayout>

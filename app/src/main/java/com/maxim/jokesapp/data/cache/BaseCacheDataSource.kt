@@ -7,7 +7,9 @@ import com.maxim.jokesapp.core.data.cache.RealmToCommonDataMapper
 import com.maxim.jokesapp.core.domain.NoCachedDataException
 import com.maxim.jokesapp.data.CommonDataModel
 import io.realm.Realm
+import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.RealmResults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -18,17 +20,15 @@ abstract class BaseCacheDataSource<T : RealmObject, E>(
 ) : CacheDataSource<E> {
 
     protected abstract val dbClass: Class<T>
-    override suspend fun getData(): CommonDataModel<E> {
-        realmProvider.provide().use {
-            val list = it.where(dbClass).findAll()
-            if (list.isEmpty())
-                throw NoCachedDataException()
-            else {
-                val realmData = it.copyFromRealm(list.random())
-                return realmToCommonMapper.map(realmData)
-            }
-        }
+    override suspend fun getData() = getRealmData { results ->
+        realmToCommonMapper.map(results.random())
     }
+
+    override suspend fun getDataList() = getRealmData { results ->
+        results.map { realmToCommonMapper.map(it) }
+    }
+
+    protected abstract fun findRealmObject(realm: Realm, id: E): T?
 
     override suspend fun addOrRemove(id: E, model: CommonDataModel<E>): CommonDataModel<E> =
         withContext(Dispatchers.IO) {
@@ -49,5 +49,13 @@ abstract class BaseCacheDataSource<T : RealmObject, E>(
             }
         }
 
-    protected abstract fun findRealmObject(realm: Realm, id: E): T?
+    private fun <R> getRealmData(block: (list: RealmResults<T>) -> R) : R {
+        realmProvider.provide().use {
+            val list = it.where(dbClass).findAll()
+            if(list.isEmpty())
+                throw NoCachedDataException()
+            else
+                return block.invoke(list)
+        }
+    }
 }

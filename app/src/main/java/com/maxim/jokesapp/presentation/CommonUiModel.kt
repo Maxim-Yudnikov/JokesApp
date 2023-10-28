@@ -3,6 +3,7 @@ package com.maxim.jokesapp.presentation
 import androidx.annotation.DrawableRes
 import com.maxim.jokesapp.R
 import com.maxim.jokesapp.core.presentation.Communication
+import com.maxim.jokesapp.core.presentation.ShowText
 
 class BaseCommonUiModel(private val text: String, private val punchline: String) : CommonUiModel(text, punchline) {
     override fun getIconResId() = R.drawable.ic_favorite_border_24
@@ -37,4 +38,6 @@ abstract class CommonUiModel(private val first: String, private val second: Stri
             getIconResId()
         )
     )
+
+    fun show(showText: ShowText) = showText.show(text())
 }

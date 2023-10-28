@@ -45,8 +45,8 @@ class JokeApp : Application() {
 
         val jokeCacheDataSource =
             JokeCachedDataSource(realmProvider, JokeRealmToCommonDataMapper(), JokeRealmMapper())
-        val cloudDataSource = NewJokeCloudDataSource(retrofit.create(NewJokeService::class.java))
-        //val cloudDataSource = JokeCloudDataSource(retrofit.create(JokeService::class.java))
+        //val cloudDataSource = NewJokeCloudDataSource(retrofit.create(NewJokeService::class.java))
+        val cloudDataSource = JokeCloudDataSource(retrofit.create(JokeService::class.java))
         val repository = BaseRepository(jokeCacheDataSource, cloudDataSource, BaseCacheData())
         val interactor = BaseInteractor(repository, failureHandler, CommonSuccessMapper())
 

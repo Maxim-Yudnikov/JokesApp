@@ -9,12 +9,20 @@ class BaseInteractor<E>(
     private val repository: CommonRepository<E>,
     private val failureHandler: FailureHandler,
     private val mapper: CommonDataModelMapper<CommonItem.Success, E>
-): CommonInteractor {
+) : CommonInteractor {
     override suspend fun getItem(): CommonItem {
         return try {
             repository.getCommonItem().map(mapper)
         } catch (e: Exception) {
             CommonItem.Failed(failureHandler.handle(e))
+        }
+    }
+
+    override suspend fun getItemList(): List<CommonItem> {
+        return try {
+            repository.getCommonItemList().map { it.map(mapper) }
+        } catch (e: Exception) {
+            listOf(CommonItem.Failed(failureHandler.handle(e)))
         }
     }
 
