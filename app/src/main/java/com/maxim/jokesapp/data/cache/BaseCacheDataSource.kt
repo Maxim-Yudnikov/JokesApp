@@ -24,6 +24,14 @@ abstract class BaseCacheDataSource<T : RealmObject, E>(
         realmToCommonMapper.map(results.random())
     }
 
+    override suspend fun remove(id: E) = withContext(Dispatchers.IO) {
+        realmProvider.provide().use { realm ->
+            realm.executeTransaction {
+                findRealmObject(realm, id)?.deleteFromRealm()
+            }
+        }
+    }
+
     override suspend fun getDataList() = getRealmData { results ->
         results.map { realmToCommonMapper.map(it) }
     }

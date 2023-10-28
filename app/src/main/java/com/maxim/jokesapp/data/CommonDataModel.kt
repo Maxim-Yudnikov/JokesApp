@@ -3,9 +3,7 @@ package com.maxim.jokesapp.data
 import com.maxim.jokesapp.core.data.ChangeCommonItem
 import com.maxim.jokesapp.core.data.ChangeStatus
 import com.maxim.jokesapp.core.data.CommonDataModelMapper
-import com.maxim.jokesapp.core.presentation.Communication
 import com.maxim.jokesapp.core.presentation.ShowText
-import com.maxim.jokesapp.presentation.State
 
 class CommonDataModel<E>(
     private val id: E,

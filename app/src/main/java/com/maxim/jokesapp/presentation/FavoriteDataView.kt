@@ -41,7 +41,7 @@ class FavoriteDataView : LinearLayout {
         actionButton = getChildAt(3) as CorrectButton
     }
 
-    fun linkWith(viewModel: CommonViewModel) {
+    fun linkWith(viewModel: CommonViewModel<Int>) {
         listenChanges { isChecked ->
             viewModel.chooseFavorites(isChecked)
         }

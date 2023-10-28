@@ -5,5 +5,6 @@ import com.maxim.jokesapp.core.data.DataFetcher
 import com.maxim.jokesapp.data.CommonDataModel
 
 interface CacheDataSource<E> : ChangeStatus<E>, DataFetcher<E> {
+    suspend fun remove(id: E)
     suspend fun getDataList(): List<CommonDataModel<E>>
 }

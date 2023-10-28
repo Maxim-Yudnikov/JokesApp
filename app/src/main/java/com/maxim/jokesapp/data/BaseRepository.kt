@@ -35,4 +35,8 @@ class BaseRepository<E>(
     override fun chooseDataSource(cached: Boolean) {
         currentDataSource = if (cached) cacheDataSource else cloudDataSource
     }
+
+    override suspend fun removeItem(id: E) {
+        cacheDataSource.remove(id)
+    }
 }

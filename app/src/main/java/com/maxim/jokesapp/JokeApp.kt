@@ -28,11 +28,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class JokeApp : Application() {
-    lateinit var viewModel: BaseViewModel
-    lateinit var quoteViewModel: BaseViewModel
+    lateinit var viewModel: BaseViewModel<Int>
+    lateinit var quoteViewModel: BaseViewModel<String>
+    lateinit var jokeCommunication: CommonCommunication<Int>
 
     override fun onCreate() {
         super.onCreate()
+        jokeCommunication = BaseCommunication()
+
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
@@ -50,7 +53,7 @@ class JokeApp : Application() {
         val repository = BaseRepository(jokeCacheDataSource, cloudDataSource, BaseCacheData())
         val interactor = BaseInteractor(repository, failureHandler, CommonSuccessMapper())
 
-        viewModel = BaseViewModel(interactor, BaseCommunication())
+        viewModel = BaseViewModel(interactor, jokeCommunication)
 
         val quoteRepository = BaseRepository(
             QuoteCachedDataSource(

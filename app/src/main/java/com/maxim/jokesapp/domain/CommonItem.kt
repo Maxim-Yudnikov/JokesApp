@@ -22,9 +22,7 @@ sealed class CommonItem<E> : Mapper<CommonUiModel<E>> {
 
     }
 
-    class Failed(private val failure: BaseFailure) : CommonItem<Unit>() {
-        override fun to(): CommonUiModel<Unit> {
-            return FailedCommonUiModel(failure.getMessage())
-        }
+    class Failed<E>(private val failure: BaseFailure) : CommonItem<E>() {
+        override fun to(): CommonUiModel<E> = FailedCommonUiModel(failure.getMessage())
     }
 }

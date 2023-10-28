@@ -5,12 +5,17 @@ import com.maxim.jokesapp.core.data.CommonRepository
 import com.maxim.jokesapp.core.domain.CommonInteractor
 import com.maxim.jokesapp.core.domain.FailureHandler
 
-class BaseInteractor<E>(
-    private val repository: CommonRepository<E>,
+class BaseInteractor<T>(
+    private val repository: CommonRepository<T>,
     private val failureHandler: FailureHandler,
-    private val mapper: CommonDataModelMapper<CommonItem.Success, E>
-) : CommonInteractor {
-    override suspend fun getItem(): CommonItem {
+    private val mapper: CommonDataModelMapper<CommonItem.Success<T>, T>
+) : CommonInteractor<T> {
+    override suspend fun removeItem(id: T) {
+        repository.removeItem(id)
+    }
+
+
+    override suspend fun getItem(): CommonItem<T> {
         return try {
             repository.getCommonItem().map(mapper)
         } catch (e: Exception) {
@@ -18,7 +23,7 @@ class BaseInteractor<E>(
         }
     }
 
-    override suspend fun getItemList(): List<CommonItem> {
+    override suspend fun getItemList(): List<CommonItem<T>> {
         return try {
             repository.getCommonItemList().map { it.map(mapper) }
         } catch (e: Exception) {
@@ -26,7 +31,7 @@ class BaseInteractor<E>(
         }
     }
 
-    override suspend fun changeFavorites(): CommonItem {
+    override suspend fun changeFavorites(): CommonItem<T> {
         return try {
             repository.changeStatus().map(mapper)
         } catch (e: Exception) {

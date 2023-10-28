@@ -2,8 +2,8 @@ package com.maxim.jokesapp.presentation
 
 import androidx.annotation.DrawableRes
 import com.maxim.jokesapp.CommonDataRecyclerAdapter
+import com.maxim.jokesapp.Communication
 import com.maxim.jokesapp.R
-import com.maxim.jokesapp.core.presentation.Communication
 import com.maxim.jokesapp.core.presentation.ShowText
 
 class BaseCommonUiModel<E>(private val text: String, private val punchline: String) :
@@ -14,13 +14,14 @@ class BaseCommonUiModel<E>(private val text: String, private val punchline: Stri
 class FavoriteCommonUiModel<E>(private val id: E, private val text: String, private val punchline: String) :
     CommonUiModel<E>(text, punchline) {
     override fun getIconResId() = R.drawable.ic_favorite_24
+    override fun matches(id: E): Boolean  = this.id == id
 
     override fun change(listener: CommonDataRecyclerAdapter.FavoriteItemClickListener<E>) {
         listener.change(id)
     }
 }
 
-class FailedCommonUiModel(private val text: String) : CommonUiModel<Unit>(text, "") {
+class FailedCommonUiModel<E>(private val text: String) : CommonUiModel<E>(text, "") {
     override fun getIconResId() = 0
     override fun text() = text
     override fun show(communication: Communication) = communication.showState(
@@ -32,10 +33,11 @@ class FailedCommonUiModel(private val text: String) : CommonUiModel<Unit>(text, 
 }
 
 
-abstract class CommonUiModel<T>(private val first: String, private val second: String) {
+abstract class CommonUiModel<E>(private val first: String, private val second: String) {
     protected open fun text() = "$first\n$second"
 
-    open fun change(listener: CommonDataRecyclerAdapter.FavoriteItemClickListener<T>) = Unit
+    open fun matches(id: E): Boolean = false
+    open fun change(listener: CommonDataRecyclerAdapter.FavoriteItemClickListener<E>) = Unit
     fun show(showText: ShowText) = showText.show(text())
 
     @DrawableRes
