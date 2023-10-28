@@ -22,6 +22,7 @@ class BaseViewModel(
         viewModelScope.launch(dispatcher) {
             if (communication.isState(State.INITIAL)) {
                 interactor.changeFavorites().to().show(communication)
+                communication.showDataList(interactor.getItemList().toUiList())
             }
         }
     }
@@ -49,7 +50,7 @@ class BaseViewModel(
         communication.observe(owner, observer)
     }
 
-    override fun observeList(owner: LifecycleOwner, observer: Observer<List<CommonUiModel>>) {
+    override fun observeList(owner: LifecycleOwner, observer: Observer<List<CommonUiModel<Int>>>) {
         communication.observeList(owner, observer)
     }
 }

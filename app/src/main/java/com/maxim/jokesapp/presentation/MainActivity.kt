@@ -3,6 +3,7 @@ package com.maxim.jokesapp.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.maxim.jokesapp.CommonDataRecyclerAdapter
 import com.maxim.jokesapp.JokeApp
 import com.maxim.jokesapp.R
@@ -21,9 +22,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = CommonDataRecyclerAdapter<Int>()
+        val adapter = CommonDataRecyclerAdapter(object :
+            CommonDataRecyclerAdapter.FavoriteItemClickListener<Int> {
+            override fun change(id: Int) {
+                Snackbar.make(
+                    favoriteDataView,
+                    "Remove from favorites?",
+                    Snackbar.LENGTH_SHORT
+                ).setAction("yes") {
+                    //viewModel.changeItemStatus(id)
+                }.show()
+            }
+        })
         recyclerView.adapter = adapter
-        viewModel.observeList(this,) {
+        viewModel.observeList(this) {
             adapter.show(it)
         }
 
