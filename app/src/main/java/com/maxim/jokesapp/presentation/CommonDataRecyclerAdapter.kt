@@ -1,6 +1,5 @@
 package com.maxim.jokesapp.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +53,7 @@ class CommonDataRecyclerAdapter<T>(
 
         class Base<T>(view: View, private val listener: FavoriteItemClickListener<T>) :
             CommonDataViewHolder<T>(view) {
-            private val iconView = itemView.findViewById<CorrectImageButton>(R.id.favorite_button)
+            private val iconView = itemView.findViewById<CorrectImageButton>(R.id.removeFromFavoriteButton)
             override fun bind(model: CommonUiModel<T>) {
                 super.bind(model)
                 iconView.setOnClickListener {

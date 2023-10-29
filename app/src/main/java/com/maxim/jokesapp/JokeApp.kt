@@ -22,6 +22,7 @@ import com.maxim.jokesapp.domain.BaseInteractor
 import com.maxim.jokesapp.domain.FailureFactory
 import com.maxim.jokesapp.presentation.BaseCommunication
 import com.maxim.jokesapp.presentation.BaseViewModel
+import io.realm.BuildConfig
 import io.realm.Realm
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,9 +31,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class JokeApp : Application() {
 
+    val useMocks = true
+
     val viewModelFactory by lazy {
         ViewModelFactory(
-            JokesModule(failureHandler, realmProvider, retrofit),
+            JokesModule(failureHandler, realmProvider, retrofit, useMocks),
             QuotesModule(failureHandler, realmProvider, retrofit)
         )
     }
@@ -44,7 +47,6 @@ class JokeApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Realm.init(this)
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
@@ -52,7 +54,7 @@ class JokeApp : Application() {
         retrofit = Retrofit.Builder().client(client).baseUrl("https://www.google.com")
             .addConverterFactory(GsonConverterFactory.create()).build()
 
-        realmProvider = BaseRealmProvider()
+        realmProvider = BaseRealmProvider(this, useMocks)
         failureHandler = FailureFactory()
     }
 }

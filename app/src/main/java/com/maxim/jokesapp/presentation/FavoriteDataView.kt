@@ -7,7 +7,6 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import com.maxim.jokesapp.R
 import com.maxim.jokesapp.core.presentation.CommonItemViewModel
-import com.maxim.jokesapp.core.presentation.CommonViewModel
 
 class FavoriteDataView : LinearLayout {
     //region constructors
@@ -37,7 +36,7 @@ class FavoriteDataView : LinearLayout {
         checkBox = getChildAt(0) as CheckBox
         val linear = getChildAt(1) as LinearLayout
         textView = linear.findViewById(R.id.jokeText)
-        changeButton = linear.findViewById(R.id.favorite_button)
+        changeButton = linear.findViewById(R.id.favoriteButton)
         progress = getChildAt(2) as CorrectProgress
         actionButton = getChildAt(3) as CorrectButton
     }
