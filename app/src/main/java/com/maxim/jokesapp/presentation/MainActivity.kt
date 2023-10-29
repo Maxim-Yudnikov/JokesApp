@@ -2,13 +2,10 @@ package com.maxim.jokesapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.maxim.jokesapp.CommonDataRecyclerAdapter
 import com.maxim.jokesapp.JokeApp
 import com.maxim.jokesapp.R
-import com.maxim.jokesapp.data.CommonDataModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: CommonDataRecyclerAdapter<Int>
@@ -36,8 +33,7 @@ class MainActivity : AppCompatActivity() {
                     "Remove from favorites?",
                     Snackbar.LENGTH_SHORT
                 ).setAction("yes") {
-                    val position = viewModel.changeItemStatus(id)
-                    adapter.update(Pair(false, position))
+                    viewModel.changeItemStatus(id)
                 }.show()
             }
         }, jokeCommunication)

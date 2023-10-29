@@ -1,15 +1,13 @@
-package com.maxim.jokesapp
+package com.maxim.jokesapp.presentation
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.maxim.jokesapp.data.CommonDataModel
-import com.maxim.jokesapp.presentation.CommonUiModel
-import com.maxim.jokesapp.presentation.CorrectImageButton
-import com.maxim.jokesapp.presentation.CorrectTextView
-import com.maxim.jokesapp.presentation.FailedCommonUiModel
+import com.maxim.jokesapp.R
+import com.maxim.jokesapp.core.presentation.CommonCommunication
 
 class CommonDataRecyclerAdapter<T>(
     private val listener: FavoriteItemClickListener<T>,
@@ -18,15 +16,8 @@ class CommonDataRecyclerAdapter<T>(
 
 
     fun update() {
-        notifyDataSetChanged()
-    }
-
-    fun update(pair: Pair<Boolean, Int>) {
-        if (pair.first) {
-            notifyItemInserted(pair.second)
-        } else {
-            notifyItemRemoved(pair.second)
-        }
+        val result = communication.getDiffResult()
+        result.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonDataViewHolder<T> {
@@ -50,7 +41,7 @@ class CommonDataRecyclerAdapter<T>(
     }
 
     override fun getItemCount(): Int {
-        Log.d("MyLog", "Length: ${ communication.getList().count().toString() }")
+        Log.d("MyLog", "Length: ${communication.getList().count().toString()}")
         return communication.getList().count()
     }
 
@@ -79,4 +70,16 @@ class CommonDataRecyclerAdapter<T>(
     interface FavoriteItemClickListener<T> {
         fun change(id: T)
     }
+}
+
+class CommonDiffUtilCallback<E>(
+    private val oldList: List<CommonUiModel<E>>,
+    private val newList: List<CommonUiModel<E>>
+) : DiffUtil.Callback() {
+    override fun getOldListSize() = oldList.size
+    override fun getNewListSize() = newList.size
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].same(newList[newItemPosition])
+    }
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = false
 }

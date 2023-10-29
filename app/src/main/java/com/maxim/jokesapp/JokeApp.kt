@@ -1,6 +1,7 @@
 package  com.maxim.jokesapp
 
 import android.app.Application
+import com.maxim.jokesapp.core.presentation.CommonCommunication
 import com.maxim.jokesapp.data.BaseRepository
 import com.maxim.jokesapp.data.CommonSuccessMapper
 import com.maxim.jokesapp.data.cache.BaseCacheData
@@ -13,8 +14,6 @@ import com.maxim.jokesapp.data.mapper.JokeRealmMapper
 import com.maxim.jokesapp.data.mapper.QuoteRealmMapper
 import com.maxim.jokesapp.data.net.JokeCloudDataSource
 import com.maxim.jokesapp.data.net.JokeService
-import com.maxim.jokesapp.data.net.NewJokeCloudDataSource
-import com.maxim.jokesapp.data.net.NewJokeService
 import com.maxim.jokesapp.data.net.QuoteCloudDataSource
 import com.maxim.jokesapp.data.net.QuoteService
 import com.maxim.jokesapp.domain.BaseInteractor

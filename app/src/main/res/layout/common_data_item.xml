@@ -7,11 +7,12 @@
 
     <com.maxim.jokesapp.presentation.CorrectTextView
         android:id="@+id/commonDataTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        tools:text="Test joke" />
+        tools:text="Test joke"
+        android:layout_marginBottom="3dp"/>
 
     <com.maxim.jokesapp.presentation.CorrectImageButton
         android:id="@+id/favorite_button"

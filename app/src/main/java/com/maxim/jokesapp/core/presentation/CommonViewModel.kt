@@ -6,7 +6,7 @@ import com.maxim.jokesapp.presentation.CommonUiModel
 import com.maxim.jokesapp.presentation.State
 
 interface CommonViewModel<T> {
-    fun changeItemStatus(id: T) : Int
+    fun changeItemStatus(id: T)
     fun getItem()
     fun getItemList()
     fun changeItemStatus()

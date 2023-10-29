@@ -1,11 +1,10 @@
 package com.maxim.jokesapp.presentation
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maxim.jokesapp.CommonCommunication
+import com.maxim.jokesapp.core.presentation.CommonCommunication
 import com.maxim.jokesapp.core.domain.CommonInteractor
 import com.maxim.jokesapp.core.presentation.CommonViewModel
 import com.maxim.jokesapp.domain.CommonItem
@@ -28,12 +27,11 @@ class BaseViewModel<T>(
     }
 
 
-    override fun changeItemStatus(id: T): Int {
-        val position = communication.removeItem(id)
+    override fun changeItemStatus(id: T) {
         viewModelScope.launch(dispatcher) {
             interactor.removeItem(id)
+            communication.showDataList(interactor.getItemList().toUiList())
         }
-        return position
     }
 
     override fun getItem() {

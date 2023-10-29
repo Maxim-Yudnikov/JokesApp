@@ -1,7 +1,8 @@
-package com.maxim.jokesapp
+package com.maxim.jokesapp.core.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DiffUtil
 import com.maxim.jokesapp.presentation.CommonUiModel
 import com.maxim.jokesapp.presentation.State
 
@@ -14,8 +15,8 @@ interface Communication {
 }
 
 interface ListCommunication<T> {
+    fun getDiffResult(): DiffUtil.DiffResult
     fun getList(): List<CommonUiModel<T>>
     fun showDataList(list: List<CommonUiModel<T>>)
     fun observeList(owner: LifecycleOwner, observer: Observer<List<CommonUiModel<T>>>)
-    fun removeItem(id: T) : Int
 }

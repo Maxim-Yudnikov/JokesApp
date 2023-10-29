@@ -1,8 +1,7 @@
 package com.maxim.jokesapp.presentation
 
 import androidx.annotation.DrawableRes
-import com.maxim.jokesapp.CommonDataRecyclerAdapter
-import com.maxim.jokesapp.Communication
+import com.maxim.jokesapp.core.presentation.Communication
 import com.maxim.jokesapp.R
 import com.maxim.jokesapp.core.presentation.ShowText
 
@@ -13,6 +12,9 @@ class BaseCommonUiModel<E>(private val text: String, private val punchline: Stri
 
 class FavoriteCommonUiModel<E>(private val id: E, private val text: String, private val punchline: String) :
     CommonUiModel<E>(text, punchline) {
+    override fun same(model: CommonUiModel<E>): Boolean {
+        return model is FavoriteCommonUiModel<E> && model.id == id
+    }
     override fun getIconResId() = R.drawable.ic_favorite_24
     override fun matches(id: E): Boolean  = this.id == id
 
@@ -33,11 +35,12 @@ class FailedCommonUiModel<E>(private val text: String) : CommonUiModel<E>(text, 
 }
 
 
-abstract class CommonUiModel<E>(private val first: String, private val second: String) {
+abstract class CommonUiModel<T>(private val first: String, private val second: String) {
+    open fun same(model: CommonUiModel<T>): Boolean = false
     protected open fun text() = "$first\n$second"
 
-    open fun matches(id: E): Boolean = false
-    open fun change(listener: CommonDataRecyclerAdapter.FavoriteItemClickListener<E>) = Unit
+    open fun matches(id: T): Boolean = false
+    open fun change(listener: CommonDataRecyclerAdapter.FavoriteItemClickListener<T>) = Unit
     fun show(showText: ShowText) = showText.show(text())
 
     @DrawableRes
