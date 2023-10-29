@@ -30,10 +30,12 @@ class JokeApp : Application() {
     lateinit var viewModel: BaseViewModel<Int>
     lateinit var quoteViewModel: BaseViewModel<String>
     lateinit var jokeCommunication: CommonCommunication<Int>
+    lateinit var quoteCommunication: CommonCommunication<String>
 
     override fun onCreate() {
         super.onCreate()
         jokeCommunication = BaseCommunication()
+        quoteCommunication = BaseCommunication()
 
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -69,7 +71,7 @@ class JokeApp : Application() {
                 quoteRepository,
                 failureHandler,
                 CommonSuccessMapper()
-            ), BaseCommunication()
+            ), quoteCommunication
         )
     }
 }

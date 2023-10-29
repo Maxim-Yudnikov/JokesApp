@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import com.maxim.jokesapp.R
+import com.maxim.jokesapp.core.presentation.CommonItemViewModel
 import com.maxim.jokesapp.core.presentation.CommonViewModel
 
 class FavoriteDataView : LinearLayout {
@@ -41,7 +42,7 @@ class FavoriteDataView : LinearLayout {
         actionButton = getChildAt(3) as CorrectButton
     }
 
-    fun linkWith(viewModel: CommonViewModel<Int>) {
+    fun linkWith(viewModel: CommonItemViewModel) {
         listenChanges { isChecked ->
             viewModel.chooseFavorites(isChecked)
         }
@@ -64,6 +65,14 @@ class FavoriteDataView : LinearLayout {
                 recycle()
             }
         }
+    }
+
+    fun checkBoxText(text: String) {
+        checkBox.text = text
+    }
+
+    fun actionButtonText(text: String) {
+        actionButton.text = text
     }
 
     fun listenChanges(block: (checked: Boolean) -> Unit) =
