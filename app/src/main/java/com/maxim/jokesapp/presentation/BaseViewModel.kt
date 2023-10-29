@@ -1,5 +1,6 @@
 package com.maxim.jokesapp.presentation
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -12,9 +13,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BaseViewModel<T>(
+abstract class BaseViewModel<T>(
+    private val name: String,
     private val interactor: CommonInteractor<T>,
-    private val communication: CommonCommunication<T>,
+    val communication: CommonCommunication<T>,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel(), CommonViewModel<T> {
     override fun changeItemStatus() {
@@ -24,6 +26,15 @@ class BaseViewModel<T>(
                 communication.showDataList(interactor.getItemList().toUiList())
             }
         }
+    }
+
+    init {
+        Log.d("MyLog", "init $name")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("MyLog", "onCleared $name")
     }
 
 

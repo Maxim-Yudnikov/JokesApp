@@ -1,21 +1,19 @@
-package com.maxim.jokesapp
+package com.maxim.jokesapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.maxim.jokesapp.JokeApp
+import com.maxim.jokesapp.R
 import com.maxim.jokesapp.core.presentation.CommonCommunication
 import com.maxim.jokesapp.core.presentation.CommonViewModel
-import com.maxim.jokesapp.presentation.BaseCommunication
-import com.maxim.jokesapp.presentation.BaseViewModel
-import com.maxim.jokesapp.presentation.CommonDataRecyclerAdapter
-import com.maxim.jokesapp.presentation.CommonUiModel
-import com.maxim.jokesapp.presentation.FavoriteDataView
 
-abstract class BaseFragment<T>: Fragment() {
+abstract class BaseFragment<V: BaseViewModel<T>, T>: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,17 +22,22 @@ abstract class BaseFragment<T>: Fragment() {
         return inflater.inflate(R.layout.data_fragment, container, false)
     }
 
-    protected abstract fun getViewModel(app: JokeApp): CommonViewModel<T>
-    protected abstract fun getCommunication(app: JokeApp): CommonCommunication<T>
     protected abstract fun checkBoxText(): String
     protected abstract fun actionButtonText(): String
+    protected abstract fun getViewModelClass(): Class<V>
+
+    private lateinit var viewModel: BaseViewModel<T>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this, (requireActivity().application as JokeApp).viewModelFactory).get(getViewModelClass())
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val application = requireActivity().application as JokeApp
-        val viewModel = getViewModel(application)
 
-        val communication = getCommunication(application)
         val favoriteDataView = view.findViewById<FavoriteDataView>(R.id.favoriteDataView)
         favoriteDataView.linkWith(viewModel)
         viewModel.observe(this) { state ->
@@ -55,7 +58,7 @@ abstract class BaseFragment<T>: Fragment() {
                     viewModel.changeItemStatus(id)
                 }.show()
             }
-        }, communication)
+        }, viewModel.communication)
 
         recyclerView.adapter = adapter
         viewModel.observeList(this) {

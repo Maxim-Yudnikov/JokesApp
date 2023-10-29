@@ -41,7 +41,6 @@ class CommonDataRecyclerAdapter<T>(
     }
 
     override fun getItemCount(): Int {
-        Log.d("MyLog", "Length: ${communication.getList().count().toString()}")
         return communication.getList().count()
     }
 
