@@ -1,6 +1,7 @@
 package  com.maxim.jokesapp
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import com.maxim.jokesapp.core.data.cache.RealmProvider
 import com.maxim.jokesapp.core.domain.FailureHandler
 import com.maxim.jokesapp.core.presentation.CommonCommunication
@@ -31,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class JokeApp : Application() {
 
-    val useMocks = true
+    val useMocks = false
 
     val viewModelFactory by lazy {
         ViewModelFactory(
@@ -46,6 +47,8 @@ class JokeApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        //FirebaseApp.initializeApp(this)
 
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY

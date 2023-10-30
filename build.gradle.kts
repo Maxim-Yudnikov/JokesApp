@@ -3,11 +3,13 @@ plugins {
     id("com.android.application") version "8.1.1" apply false
     id("org.jetbrains.kotlin.android") version "1.9.0" apply false
     id("io.realm.kotlin") version "1.4.0" apply false
+    id("com.google.gms.google-services") version "4.4.0" apply false
 }
 
 buildscript {
     dependencies {
         classpath("io.realm:realm-gradle-plugin:10.16.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8")
+        classpath("com.google.gms:google-services:4.4.0")
     }
 }

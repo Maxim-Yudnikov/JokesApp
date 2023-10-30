@@ -22,25 +22,29 @@ abstract class BaseViewModel<T>(
     override fun changeItemStatus() {
         viewModelScope.launch(dispatcher) {
             if (communication.isState(State.INITIAL)) {
+                val oldListCount = interactor.getItemList().count()
                 interactor.changeFavorites().to().show(communication)
+                while (oldListCount == interactor.getItemList().count()) {}
                 communication.showDataList(interactor.getItemList().toUiList())
             }
         }
     }
 
-    init {
-        Log.d("MyLog", "init $name")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("MyLog", "onCleared $name")
-    }
+//    init {
+//        Log.d("MyLog", "init $name")
+//    }
+//
+//    override fun onCleared() {
+//        super.onCleared()
+//        Log.d("MyLog", "onCleared $name")
+//    }
 
 
     override fun changeItemStatus(id: T) {
         viewModelScope.launch(dispatcher) {
+            val oldListCount = interactor.getItemList().count()
             interactor.removeItem(id)
+            while (oldListCount == interactor.getItemList().count()) {}
             communication.showDataList(interactor.getItemList().toUiList())
         }
     }
@@ -53,7 +57,8 @@ abstract class BaseViewModel<T>(
     }
 
     override fun getItemList() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
+            Log.d("MyLog", "3interactor.getItemList() length: ${interactor.getItemList().count()}")
             communication.showDataList(interactor.getItemList().toUiList())
         }
     }

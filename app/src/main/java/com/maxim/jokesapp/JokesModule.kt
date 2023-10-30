@@ -1,12 +1,18 @@
 package com.maxim.jokesapp
 
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.maxim.jokesapp.core.data.cache.RealmProvider
 import com.maxim.jokesapp.core.domain.FailureHandler
 import com.maxim.jokesapp.data.BaseRepository
 import com.maxim.jokesapp.data.CommonSuccessMapper
 import com.maxim.jokesapp.data.cache.BaseCacheData
+import com.maxim.jokesapp.data.cache.FirebaseCacheDataSource
 import com.maxim.jokesapp.data.cache.JokeCachedDataSource
+import com.maxim.jokesapp.data.cache.JokeFirebaseToCommonDataMapper
 import com.maxim.jokesapp.data.cache.JokeRealmToCommonDataMapper
+import com.maxim.jokesapp.data.mapper.JokeFirebaseMapper
 import com.maxim.jokesapp.data.mapper.JokeRealmMapper
 import com.maxim.jokesapp.data.net.JokeCloudDataSource
 import com.maxim.jokesapp.data.net.JokeService
@@ -40,10 +46,13 @@ class JokesModule(
         BaseRepository(getCachedDataSource(), getCloudDataSource(), BaseCacheData())
 
     private fun getCachedDataSource() =
-        JokeCachedDataSource(realmProvider, JokeRealmToCommonDataMapper(), JokeRealmMapper())
+        //JokeCachedDataSource(realmProvider, JokeRealmToCommonDataMapper(), JokeRealmMapper())
+        FirebaseCacheDataSource(getFirebase(), JokeFirebaseToCommonDataMapper(), JokeFirebaseMapper())
 
     private fun getCloudDataSource() = if (useMocks)
         MockJokeCloudDataSource()
     else
         JokeCloudDataSource(retrofit.create(JokeService::class.java))
+
+    private fun getFirebase() = FirebaseDatabase.getInstance().getReference("Jokes")
 }

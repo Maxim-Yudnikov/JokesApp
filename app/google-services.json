@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "340469607074",
+    "firebase_url": "https://jokesandquotes-ae582-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "jokesandquotes-ae582",
+    "storage_bucket": "jokesandquotes-ae582.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340469607074:android:cf677854b17aa507cec5fb",
+        "android_client_info": {
+          "package_name": "com.maxim.jokesapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgGlcFS0t0hU70bgo4eWaIz6Fe4DA9_QA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
